@@ -29,15 +29,17 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const reply =
-      response.output_text ||
-      "I’m here and ready to help.";
+    const reply = response.output_text || "I’m here and ready to help.";
 
     return NextResponse.json({ reply });
-  } catch (error) {
+  } catch (error: any) {
     console.error("API route error:", error);
     return NextResponse.json(
-      { reply: "There was a problem connecting to OpenAI." },
+      {
+        reply:
+          "I hit an error connecting to the model. Check your OPENAI_API_KEY and deployment settings.",
+        error: error?.message || "Unknown error",
+      },
       { status: 500 }
     );
   }
